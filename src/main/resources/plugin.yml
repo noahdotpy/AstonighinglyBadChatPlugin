@@ -1,0 +1,6 @@
+name: AstonishinglyBadChatPlugin
+version: '${project.version}'
+main: me.diligord.astonishinglybadchatplugin.AstonishinglyBadChatPlugin
+api-version: 1.19
+authors: [ Diligord ]
+description: A plugin that improves chat formatting and makes it more aesthetically pleasiing, despite what the name implies.
