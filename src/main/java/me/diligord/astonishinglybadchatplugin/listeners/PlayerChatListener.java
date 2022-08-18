@@ -1,26 +1,38 @@
 package me.diligord.astonishinglybadchatplugin.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import me.diligord.astonishinglybadchatplugin.AstonishinglyBadChatPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class PlayerChatListener implements Listener {
 
-    @EventHandler
-    public void onPlayerChat(AsyncChatEvent e) {
-        // Don't do anything for cancelled events
-        if (e.isCancelled()) return;
+    private final AstonishinglyBadChatPlugin plugin;
 
+    public PlayerChatListener(AstonishinglyBadChatPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(AsyncChatEvent e) {
 
         TextComponent message = (TextComponent) e.message();
 
-        TextComponent newMessage = Component.text("MEMBER ").color(NamedTextColor.DARK_GRAY);
-        newMessage = newMessage.append(e.getPlayer().displayName().color(NamedTextColor.DARK_BLUE));
-        newMessage = newMessage.append(Component.text(": ")).color(NamedTextColor.DARK_BLUE);
+        String playerRank = plugin.getConfig().getString("playerRanks." + e.getPlayer().getUniqueId());
+        String formattedPlayerRank = plugin.getConfig().getString("ranks." + playerRank + ".formattedName");
+
+        // TODO: Allow changing text decoration of the rank, bold, italics, etc..
+        assert formattedPlayerRank != null;
+        TextComponent newMessage = LegacyComponentSerializer.legacy('&')
+                .deserialize(formattedPlayerRank);
+        newMessage = newMessage.append(e.getPlayer().displayName());
+        newMessage = newMessage.append(Component.text(":"));
+        newMessage = newMessage.append(Component.text(" "));
 
         if (e.getPlayer().hasPermission("astonishinglyBadChatPlugin.coloredMessages")) {
             if (Component.text(ChatColor.translateAlternateColorCodes('&', message.content())).hasStyling()) {

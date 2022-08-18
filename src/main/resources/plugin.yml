@@ -3,4 +3,8 @@ version: '${project.version}'
 main: me.diligord.astonishinglybadchatplugin.AstonishinglyBadChatPlugin
 api-version: 1.19
 authors: [ Diligord ]
-description: A plugin that improves chat formatting and makes it more aesthetically pleasiing, despite what the name implies.
+description: A plugin that improves chat formatting and makes it more aesthetically pleasing, despite what the name implies. This plugin also adds some functionality to the chat system, like rank settings.
+commands:
+  setrank:
+    description: "Sets the rank of the selected player."
+    usage: /<command> <player> <rank>
